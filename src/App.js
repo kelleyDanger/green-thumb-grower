@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import plantImages from './PlantImages';
+import './App.css';
 
 class App extends Component {
   constructor(){
@@ -17,14 +18,15 @@ class App extends Component {
   //////////////////////
 
   componentDidMount(){
-    setInterval(this.updatePlantImage,500)
+    setInterval(this.updatePlantImage,700)
   }
 
   render() {
     return (
       <div>
         <h1>{this.props.title}</h1>
-        <h3>Day {this.state.plantSize}</h3>
+        Grow youself a lil plant! Be careful, because your choices along the journey can make a difference.
+        <h2>Day {this.state.plantSize}</h2>
         {this.renderAskWeather()}
         <Plant img={this.state.currentImage} />
         {this.renderResetPlantButton()}
@@ -54,7 +56,7 @@ class App extends Component {
 
     return (
       <div>
-        Choose the weather.
+        <h3>Choose the weather:</h3>
         <img className="weatherImg" src={plantImages.sun} onClick={() => this.setAskWeather(false)} />
         <img className="weatherImg" src={plantImages.rain} onClick={() => this.setAskWeather(true)} />
       </div>
@@ -70,7 +72,7 @@ class App extends Component {
     return (
       <div>
         <h2>{messageTxt}</h2>
-        <button onClick={this.resetPlant}>
+        <button className="button-reset" onClick={this.resetPlant}>
           Let's Grow Again!
         </button>
       </div>
