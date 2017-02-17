@@ -7,9 +7,9 @@ import plant6 from './images/plant_6.png'
 import plant7 from './images/plant_7.png'
 import plant8 from './images/plant_8.png'
 import plant9 from './images/plant_9.png'
-import plant10 from './images/plant_10.png'
-import plant11 from './images/plant_11.png'
-import plant12 from './images/plant_12.png'
+import deadPlant from './images/dead_plant.png'
+import sun from './images/sun.png'
+import rain from './images/rain.png'
 
 
 export default {
@@ -22,7 +22,7 @@ export default {
   plant7,
   plant8,
   plant9,
-  plant10,
-  plant11,
-  plant12
+  deadPlant,
+  rain,
+  sun
 }
