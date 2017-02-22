@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import ReactDOM from 'react-dom';
+import { Button, Grid, Row, Col } from 'react-bootstrap';
 import plantImages from './PlantImages';
 import gardenImages from './GardenImages';
 import './App.css';
@@ -9,9 +10,15 @@ class App extends Component {
     super();
     this.state = {
       currentImage: plantImages.plant1,
+      plantName: 'NONAME',
+      plantType: 'pansy',
       plantSize: 1,
       askWeather: false,
-      rainCount: 0
+      rainCount: 0,
+      gardenPlants: [
+        ['Sunny', 'sunflower'],
+        ['Cassandra', 'daisy']
+      ]
     }
   }
 
@@ -44,12 +51,13 @@ class App extends Component {
 
         <Row id="resetRow">
           {this.renderResetPlantButton()}
+          {this.renderSavePlantButton()}
         </Row>
 
         <Row id="gardenRow">
           <Col className="fenceCol" xs={12}></Col>
-          <Col className="gardenCol" xs={12}>
-            <img className="plantImg" role="presentation" src={plantImages['sunflower']} />
+          <Col id="garden" className="gardenCol" xs={12}>
+            {this.renderGardenPlants()}
           </Col>
         </Row>
       </Grid>
@@ -94,12 +102,26 @@ class App extends Component {
     return (
       <Col xs={12}>
         <h2>{messageTxt}</h2>
-        <button className="button-reset" onClick={this.resetPlant}>
+        <Button bsStyle="warning" onClick={this.resetPlant}>
           Let's Grow Again!
-        </button>
+        </Button>
       </Col>
     );
   }
+
+  renderSavePlantButton = () => {
+    if(this.state.plantSize < 8) {
+      return false;
+    }
+    return (
+      <Col xs={6}>
+        <Button bsStyle="success" onClick={this.savePlant}>
+          Save Plant!
+        </Button>
+      </Col>
+    );
+  }
+
 
   resetPlant = () => {
     this.setState({
@@ -108,6 +130,36 @@ class App extends Component {
       askWeather: false,
       rainCount: 0
     })
+  }
+
+  savePlant = () => {
+    // add plant to garden
+    var gardenPlants = this.state.gardenPlants.slice();
+    gardenPlants.unshift( [this.state.plantName, this.state.plantType] );
+    this.setState({gardenPlants: gardenPlants});
+    // reset plant
+    this.resetPlant();
+  }
+
+  renderGardenPlants = () => {
+    // loop through plants
+    const gardenPlants = this.state.gardenPlants;
+    console.log(gardenPlants);
+    return (
+      gardenPlants.map(function(plant, index){
+        const name = plant[0];
+        const type = plant[1];
+        console.log("NAME: " + name);
+        console.log("TYPE: " + type);
+
+        return (
+          <div id="plantDiv">
+            <img className="plantImg" role="presentation" src={plantImages[type]} />
+            <h4 className="plantName">{name}</h4>
+          </div>
+        );
+      })
+    );
   }
 
   updatePlantImage = () => {
