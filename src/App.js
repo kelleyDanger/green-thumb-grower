@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Grid, Row, Col } from 'react-bootstrap';
 import plantImages from './PlantImages';
+import gardenImages from './GardenImages';
 import './App.css';
 
 class App extends Component {
@@ -23,14 +25,34 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <h1>{this.props.title}</h1>
-        Grow youself a lil plant! Be careful, because your choices along the journey can make a difference.
-        <h2>Day {this.state.plantSize}</h2>
-        {this.renderAskWeather()}
-        <Plant img={this.state.currentImage} />
-        {this.renderResetPlantButton()}
-      </div>
+      <Grid>
+        <Row>
+          <h1>{this.props.title}</h1>
+          Grow youself a lil plant! Be careful, because your choices along the journey can make a difference.
+        </Row>
+
+        <Row>
+          <Col id="plantCol" xs={6}>
+            <h2>Day {this.state.plantSize}</h2>
+            <Plant img={this.state.currentImage} />
+
+          </Col>
+          <Col id="weatherCol" xs={6}>
+            {this.renderAskWeather()}
+          </Col>
+        </Row>
+
+        <Row id="resetRow">
+          {this.renderResetPlantButton()}
+        </Row>
+
+        <Row id="gardenRow">
+          <Col className="fenceCol" xs={12}></Col>
+          <Col className="gardenCol" xs={12}>
+            <img className="plantImg" role="presentation" src={plantImages['sunflower']} />
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 
@@ -55,10 +77,10 @@ class App extends Component {
     }
 
     return (
-      <div>
+      <div id="weatherDiv">
         <h3>Choose the weather:</h3>
-        <img className="weatherImg" src={plantImages.sun} onClick={() => this.setAskWeather(false)} />
-        <img className="weatherImg" src={plantImages.rain} onClick={() => this.setAskWeather(true)} />
+        <img className="weatherImg" src={gardenImages.sun} onClick={() => this.setAskWeather(false)} />
+        <img className="weatherImg" src={gardenImages.rain} onClick={() => this.setAskWeather(true)} />
       </div>
     )
   }
@@ -70,12 +92,12 @@ class App extends Component {
     var messageTxt = this.state.rainCount < 1 ? "Oops! Your plant didn't get any rain and died. T_T" : "Congratulations! Your lil plant looks happy. :)";
 
     return (
-      <div>
+      <Col xs={12}>
         <h2>{messageTxt}</h2>
         <button className="button-reset" onClick={this.resetPlant}>
           Let's Grow Again!
         </button>
-      </div>
+      </Col>
     );
   }
 
@@ -105,7 +127,7 @@ class App extends Component {
     // full grown, dead plant
     if(this.state.plantSize == 8 &&
        this.state.rainCount == 0) {
-      newPlantImage = plantImages['deadPlant'];
+      newPlantImage = plantImages['plantDead'];
     }
 
     this.setState({
@@ -116,7 +138,7 @@ class App extends Component {
 }
 
 const Plant = (props) =>
-  <img role="presentation" src={props.img} />
+  <img className="plantImg" role="presentation" src={props.img} />
 
 
 export default App;
