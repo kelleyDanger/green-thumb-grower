@@ -10,9 +10,10 @@ class App extends Component {
     super();
     this.state = {
       currentImage: plantImages.plant1,
-      plantName: 'NONAME',
-      plantType: 'pansy',
+      plantName: '',
+      plantType: '',
       plantSize: 1,
+      askPlantType: true,
       askWeather: false,
       rainCount: 0,
       gardenPlants: [
@@ -27,7 +28,7 @@ class App extends Component {
   //////////////////////
 
   componentDidMount(){
-    setInterval(this.updatePlantImage,700)
+    setInterval(this.renderPlant(), 700)
   }
 
   render() {
@@ -40,17 +41,20 @@ class App extends Component {
 
         <Row>
           <Col id="plantCol" xs={6}>
-            <h2>Day {this.state.plantSize}</h2>
-            <Plant img={this.state.currentImage} />
-
+            {this.renderAskPlantType()}
           </Col>
           <Col id="weatherCol" xs={6}>
             {this.renderAskWeather()}
           </Col>
         </Row>
 
-        <Row id="resetRow">
-          {this.renderResetPlantButton()}
+        <Row id="grownRow">
+          <Col xs={12}>
+            {this.renderGrownPlantMessage()}
+          </Col>
+          <Col xs={6}>
+            {this.renderResetPlantButton()}
+          </Col>
           {this.renderSavePlantButton()}
         </Row>
 
@@ -68,6 +72,39 @@ class App extends Component {
   //  FUNCTIONS
   ///////////////
   //
+
+  setPlantType = (type) => {
+    this.setSet({askPlantType: false});
+
+  }
+
+  handleChange = (e) => {
+    console.log('handling select list change: ' + e.target.value);
+    this.setState({
+      plantType: e.target.value,
+      askPlantType: false
+    });
+  }
+
+
+  renderAskPlantType = () => {
+    if(!this.state.askPlantType) {
+      return false
+    }
+    return (
+        <label>
+          Pick which type of plant you would like to grow:
+          <select value={this.state.plantType} onChange={this.handleChange}>
+            <option value="aloeVera">Aloe Vera</option>
+            <option value="cactus">Cactus</option>
+            <option value="daisy">Daisy</option>
+            <option value="pansy">Pansy</option>
+            <option value="sunflower">Sunflower</option>
+            <option value="tulip">Tulip</option>
+          </select>
+        </label>
+    );
+  }
 
   setAskWeather = (rainy) => {
     const rainCount = rainy ? this.state.rainCount + 1 : this.state.rainCount;
@@ -93,7 +130,7 @@ class App extends Component {
     )
   }
 
-  renderResetPlantButton = () => {
+  renderGrownPlantMessage = () => {
     if(this.state.plantSize < 9) {
       return false;
     }
@@ -102,11 +139,19 @@ class App extends Component {
     return (
       <Col xs={12}>
         <h2>{messageTxt}</h2>
-        <Button bsStyle="warning" onClick={this.resetPlant}>
-          Let's Grow Again!
-        </Button>
       </Col>
     );
+  }
+
+  renderResetPlantButton = () => {
+    if(this.state.plantSize < 8) {
+      return false;
+    }
+    return (
+    <button>grow again</button>
+      //<PlantButton style={'warning'} text={'Let\'s Grow Again!'} click={this.resetPlant}/>
+     );
+
   }
 
   renderSavePlantButton = () => {
@@ -115,9 +160,10 @@ class App extends Component {
     }
     return (
       <Col xs={6}>
-        <Button bsStyle="success" onClick={this.savePlant}>
-          Save Plant!
-        </Button>
+        <button>save plant</button>
+        //<Button bsStyle="success" onClick={this.savePlant}>
+        //  Save Plant!
+        //</Button>
       </Col>
     );
   }
@@ -144,13 +190,10 @@ class App extends Component {
   renderGardenPlants = () => {
     // loop through plants
     const gardenPlants = this.state.gardenPlants;
-    console.log(gardenPlants);
     return (
       gardenPlants.map(function(plant, index){
         const name = plant[0];
         const type = plant[1];
-        console.log("NAME: " + name);
-        console.log("TYPE: " + type);
 
         return (
           <div id="plantDiv">
@@ -162,8 +205,8 @@ class App extends Component {
     );
   }
 
-  updatePlantImage = () => {
-    // plant is full grown
+  renderPlant = () => {
+    // plant is full grown or plant type not selected
     if(this.state.plantSize > 8){
       return false;
     }
@@ -185,6 +228,14 @@ class App extends Component {
     this.setState({
       currentImage: newPlantImage,
       plantSize: newPlantSize})
+
+    return (
+      <div>
+       <h2>Day {this.state.plantSize}</h2>
+       <Plant img={this.state.currentImage} />
+      </div>
+    );
+
   }
 
 }
@@ -192,5 +243,9 @@ class App extends Component {
 const Plant = (props) =>
   <img className="plantImg" role="presentation" src={props.img} />
 
+//const PlantButton = (props) =>
+//  <Button bsStyle={props.style} onClick={props.click}>
+//    {props.text}
+//  </Button>
 
 export default App;
