@@ -1,10 +1,49 @@
-body{font-family: 'Josefin Slab', serif;}
+body{
+  font-family: 'Josefin Slab', serif;
+  padding-left: 30px;
+  padding-top: 10px;
+}
 
 h1,h2,h3,h4,h5,h6{font-family: 'Lobster', cursive;}
 
 .weatherImg {
   max-width: 150px;
 }
+
+#plantDiv {
+  float: left;
+  text-align: center;
+}
+.plantImg {
+  max-height: 200px;
+}
+.plantName {
+  color: white;
+}
+
+#plantCol {
+    text-align: right;
+  }
+
+#weatherCol {
+    text-align: center;
+}
+
+#grownRow {
+  text-align: center;
+}
+
+.fenceCol {
+  min-height: 160px;
+  background-image:url(./images/garden/redFenceWithGrass.png);
+  background-repeat:x;
+}
+
+.gardenCol {
+  background-image:url(./images/garden/soil.png);
+  background-repeat:repeat;
+}
+
 
 .button-reset {
   background: #39f0d5;
